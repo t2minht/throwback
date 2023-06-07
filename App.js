@@ -2,18 +2,36 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import NavBar from './components/NavBar';
 import SliderBar from './components/SliderBar';
+// import * as SQLite from 'expo-sqlite';
+
+// function openDatabase() {
+//   if (Platform.OS === "web") {
+//     return {
+//       transaction: () => {
+//         return {
+//           executeSql: () => {},
+//         };
+//       },
+//     };
+//   }
+
+//   const db = SQLite.openDatabase("db.db");
+//   return db;
+// }
 
 export default function App() {
+  const date = new Date();
+  var dateString = date.toLocaleDateString();
   return (
     <ScrollView contentContainerStyle={styles.container}
     keyboardShouldPersistTaps='handled'
     >
       <StatusBar style="light" />
-      <NavBar style = {{}}/>
+      <NavBar title = "THROWBACK"/>
       <View style={styles.textboxTitle}>
         <TextInput
           style = {{fontSize: 20}}
-          placeholder='Title'
+          placeholder={dateString}
           textAlign='center'
           textAlignVertical='center'
           
@@ -30,6 +48,9 @@ export default function App() {
       </View>
 
       <SliderBar />
+
+      <View>
+      </View>
 
 
       

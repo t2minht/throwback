@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function NavBar() {
+export default function NavBar(props) {
     return (
         <View style={styles.container}>
-            <Text style={{color: '#ffffff'}}>Throwback</Text>
+            <Pressable style={{position: "absolute", left:10, top:25}} onPress= {() => alert("Calendar")}>
+              <Text style={{color: '#ffffff', fontSize:30}}>[=]</Text>
+            </Pressable>
+            <Text style={{color: '#ffffff'}}>{props.title}</Text>
         </View>
     );
 }
@@ -13,6 +16,7 @@ export default function NavBar() {
       backgroundColor: '#000000',
       alignItems: 'center',
       justifyContent: 'center',
+      flexDirection: "row",
       width: '100%',
       height: 75,
       paddingTop:20
