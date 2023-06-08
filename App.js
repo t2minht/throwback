@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import NavBar from './components/NavBar';
 import SliderBar from './components/SliderBar';
+import { useState } from 'react';
 // import * as SQLite from 'expo-sqlite';
 
 // function openDatabase() {
@@ -22,12 +23,16 @@ import SliderBar from './components/SliderBar';
 export default function App() {
   const date = new Date();
   var dateString = date.toLocaleDateString();
+  const [bool, setBool] = useState(false);
+  function toggle(){
+    bool = !bool;
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}
     keyboardShouldPersistTaps='handled'
     >
       <StatusBar style="light" />
-      <NavBar title = "THROWBACK"/>
+      <NavBar title = "THROWBACK" toggleFunction = {toggle} clicked = {bool} />
       <View style={styles.textboxTitle}>
         <TextInput
           style = {{fontSize: 20}}
@@ -48,6 +53,7 @@ export default function App() {
       </View>
 
       <SliderBar />
+      <Text>{JSON.stringify(bool)}</Text>
 
       <View>
       </View>
