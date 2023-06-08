@@ -1,65 +1,109 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import NavBar from './components/NavBar';
 import SliderBar from './components/SliderBar';
-import { useState } from 'react';
-// import * as SQLite from 'expo-sqlite';
+import { useState, useEffect } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as SQLite from 'expo-sqlite';
+import './global.js';
+function openDatabase() {
+  if (Platform.OS === "web") {
+    return {
+      transaction: () => {
+        return {
+          executeSql: () => {},
+        };
+      },
+    };
+  }
 
-// function openDatabase() {
-//   if (Platform.OS === "web") {
-//     return {
-//       transaction: () => {
-//         return {
-//           executeSql: () => {},
-//         };
-//       },
-//     };
-//   }
+  const db = SQLite.openDatabase("db.db");
+  return db;
+}
 
-//   const db = SQLite.openDatabase("db.db");
-//   return db;
-// }
+const db = openDatabase();
 
 export default function App() {
-  const date = new Date();
+  const [date, changeDate] = useState(new Date());
   var dateString = date.toLocaleDateString();
   const [bool, setBool] = useState(false);
-  function toggle(){
-    bool = !bool;
+  const dateChanger = (event, selectedDate) => {
+    changeDate(selectedDate);
   }
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "CREATE TABLE if not exists entries (date TEXT PRIMARY KEY NOT NULL, title TEXT, subject TEXT, rating INTEGER);"
+      );
+    });
+  }, []);
+
+  const add = (input, type) => {
+    if (input === null || input === "") {
+      return false;
+    }
+    var query = "INSERT INTO entries (date, " + type + ") values (?, ?)";
+    var inputs = [dateString, input];
+    db.transaction(
+      (tx) => {
+        tx.executeSql(query, inputs);
+
+      }
+    );
+    alert("test");
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}
     keyboardShouldPersistTaps='handled'
     >
       <StatusBar style="light" />
-      <NavBar title = "THROWBACK" toggleFunction = {toggle} clicked = {bool} />
-      <View style={styles.textboxTitle}>
-        <TextInput
-          style = {{fontSize: 20}}
-          placeholder={dateString}
-          textAlign='center'
-          textAlignVertical='center'
-          
-        ></TextInput>
+      <NavBar title = "THROWBACK" />
+
+      <View style = {{width: "100%", alignItems: "center"}}>
+        <View style={styles.textboxTitle}>
+          <TextInput
+            style = {{fontSize: 20}}
+            placeholder={dateString}
+            textAlign='center'
+            textAlignVertical='center'
+            editable = {!bool}
+            onChangeText={newText => add(newText, "title")}
+            
+          ></TextInput>
+        </View>
+        <View style={styles.textboxNotes}>
+          <TextInput
+            placeholder="How's your day been?"
+            style = {{fontSize: 15}}
+            multiline
+            numberOfLines={4}
+            flex= {1}
+            editable = {!bool}
+          ></TextInput>
+        </View>
+
+        <SliderBar clickable = {bool}/>
       </View>
-      <View style={styles.textboxNotes}>
-        <TextInput
-          placeholder="How's your day been?"
-          style = {{fontSize: 15}}
-          multiline
-          numberOfLines={4}
-          flex= {1}
-        ></TextInput>
-      </View>
 
-      <SliderBar />
-      <Text>{JSON.stringify(bool)}</Text>
+      {bool && (
+        <View style = {{position: 'absolute', width: "100%", height:"100%", marginTop: 75, alignItems: "center"}}>
+          <View style = {{position: 'absolute', width: "100%", height:"100%", backgroundColor:"gray"  }}></View>
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={'date'}
+            onChange={dateChanger}
+            style = {{marginTop: 40, fontSize: '30px'}}
+            themeVariant='dark'
+          />
+        </View>
+      )}
 
-      <View>
-      </View>
-
-
-      
+      <Pressable style={{position: "absolute", left:10, top:25}} onPress= {() => setBool(!bool)}>
+        <Text style={{color: '#ffffff', fontSize:30}}>[=]</Text>
+      </Pressable>
     </ScrollView>
   );
 }

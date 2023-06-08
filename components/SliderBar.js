@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import React, {useState} from 'react';
 
 
-export default function SliderBar() {
+export default function SliderBar(props) {
    
     const [x, setColor] = useState("0%");
     // const [color0, setColor0] = useState("#ffffff");
@@ -67,6 +67,7 @@ export default function SliderBar() {
         // setCount((count + 1) / 11);
         
         setColor( "" + ( ((count + 1) / 11) * 100) + "%");
+        global.count = count;
         if(count == 0)
             setColor("0%");
     }
@@ -75,37 +76,37 @@ export default function SliderBar() {
     return (
         <View style={[styles.container, {flexDirection: 'row'} ]}>
             <View style={{backgroundColor:"green", position:'absolute', width: x, height:"100%", opacity: .2, borderRadius: "40"}}></View>
-            <Pressable style={[styles.leftbutton, {}]} onPress={() => setCount(0)}>
+            <Pressable style={[styles.leftbutton, {}]} onPress={() => setCount(0)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{0}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(1)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(1)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{1}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(2)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(2)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{2}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(3)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(3)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{3}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(4)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(4)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{4}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(5)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(5)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{5}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(6)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(6)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{6}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(7)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(7)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{7}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(8)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(8)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{8}</Text>
             </Pressable>
-            <Pressable style={[styles.button, {}]} onPress={() => setCount(9)}>
+            <Pressable style={[styles.button, {}]} onPress={() => setCount(9)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{9}</Text>
             </Pressable>
-            <Pressable style={[styles.rightbutton, {}]} onPress={() => setCount(10)}>
+            <Pressable style={[styles.rightbutton, {}]} onPress={() => setCount(10)} disabled = {props.clickable}>
                 <Text style={styles.buttonLabel}>{10}</Text>
             </Pressable>
         </View>
