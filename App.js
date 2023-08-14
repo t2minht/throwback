@@ -45,10 +45,8 @@ export default function App() {
     }
     var query = "INSERT INTO entries (date, " + type + ") values (?, ?)";
     var inputs = [dateString, input];
-    db.transaction(
-      (tx) => {
+    db.transaction((tx) => {
         tx.executeSql(query, inputs);
-
       }
     );
     alert("test");
